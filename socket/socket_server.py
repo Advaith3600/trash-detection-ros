@@ -33,7 +33,7 @@ while True:
             a = pickle.dumps(frame)
             message = struct.pack("Q",len(a))+a
             client_socket.sendall(message)
-            cv2.imshow('Sending...',frame)
+            # cv2.imshow('Sending...',frame) # commented for ssh
             key = cv2.waitKey(10)
             if key ==13:
                 client_socket.close()
