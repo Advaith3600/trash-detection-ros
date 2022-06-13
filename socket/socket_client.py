@@ -31,11 +31,12 @@ send_data = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 host_ip = '192.168.1.9'# Standard loopback interface address (localhost)
 port1 = 10058 # Port to listen on (non-privileged ports are > 1023)
-port2 = 3306
+# port2 = 3600
 # now connect to the web server on the specified port number
 client_socket.connect((host_ip,port1))
-send_data.connect((host_ip,port2))
-send_data.listen(5)
+# send_data.connect((host_ip,port2))
+# send_data.bind(('192.168.1.2',port2))
+# send_data.listen(5)
 #'b' or 'B'produces an instance of the bytes type instead of the str type
 #used in handling binary data from network connections
 data = b""
@@ -84,9 +85,9 @@ while True:
             message_dict={}
             message_dict["angle"]=ang
             message = json.dumps(message_dict)
-            client_socket2,addr = send_data.accept()
-            if client_socket2:
-                send_data.sendall(message)
+            # client_socket2,addr = send_data.accept()
+            # if client_socket2:
+                # send_data.sendall(message)
 
         cv2.imshow('Object Detector',frame);
     else:
