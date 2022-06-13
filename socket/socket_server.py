@@ -8,9 +8,10 @@ import imutils
 # create an INET, STREAMing socket
 server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 host_name  = socket.gethostname()
-host_ip = socket.gethostbyname(host_name)
+# host_ip = socket.gethostbyname(host_name)
+host_ip='localhost'
 print('HOST IP:',host_ip)
-port = 10050
+port = 10058
 socket_address = (host_ip,port)
 print('Socket created')
 # bind the socket to the host.
@@ -34,6 +35,11 @@ while True:
             message = struct.pack("Q",len(a))+a
             client_socket.sendall(message)
             # cv2.imshow('Sending...',frame) # commented for ssh
-            key = cv2.waitKey(10)
+            key = cv2.waitKey(10000)
             if key ==13:
                 client_socket.close()
+            ang=client_socket.recv(1024)
+            if not ang:
+                continue
+            else:
+                print(ang)

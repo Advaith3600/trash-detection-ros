@@ -27,9 +27,9 @@ model = torch.hub.load('ultralytics/yolov5', 'custom', 'D:\\OneDrive\\Desktop\\r
 # model=torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
 # Client socket
 # create an INET, STREAMing socket :
-send_data = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+# send_data = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-host_ip = '192.168.1.9'# Standard loopback interface address (localhost)
+host_ip = 'localhost'# Standard loopback interface address (localhost)
 port1 = 10058 # Port to listen on (non-privileged ports are > 1023)
 # port2 = 3600
 # now connect to the web server on the specified port number
@@ -85,18 +85,23 @@ while True:
             message_dict={}
             message_dict["angle"]=ang
             message = json.dumps(message_dict)
+            client_socket.sendall(bytes(message,encoding="utf-8"))
             # client_socket2,addr = send_data.accept()
             # if client_socket2:
                 # send_data.sendall(message)
 
         cv2.imshow('Object Detector',frame);
+        key = cv2.waitKey(10000)
+        if key  == 13:
+            break
     else:
+        key = cv2.waitKey(10000)
+        if key  == 13:
+            break
         continue
 
 
     # cv2.imshow("Receiving...",frame)
-    key = cv2.waitKey(10)
-    if key  == 13:
-        break
+
 client_socket.close()
-send_data.close()
+# send_data.close()
