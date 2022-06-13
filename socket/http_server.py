@@ -66,6 +66,9 @@ class S(BaseHTTPRequestHandler):
                         self._set_response()
                         self.wfile.write(str(ang).encode('utf-8'))
                     cv2.imshow('Object Detector',frame)
+                else:
+                    self._set_response()
+                    self.wfile.write("Could not detect a plastic bottle".encode('utf-8'))
 
             else:
 
