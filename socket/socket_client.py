@@ -35,6 +35,7 @@ port2 = 3306
 # now connect to the web server on the specified port number
 client_socket.connect((host_ip,port1))
 send_data.connect((host_ip,port2))
+send_data.listen(5)
 #'b' or 'B'produces an instance of the bytes type instead of the str type
 #used in handling binary data from network connections
 data = b""
@@ -83,7 +84,9 @@ while True:
             message_dict={}
             message_dict["angle"]=ang
             message = json.dumps(message_dict)
-            send_data.sendall(message)
+            client_socket2,addr = send_data.accept()
+            if client_socket2:
+                send_data.sendall(message)
 
         cv2.imshow('Object Detector',frame);
     else:
@@ -95,3 +98,4 @@ while True:
     if key  == 13:
         break
 client_socket.close()
+send_data.close()
