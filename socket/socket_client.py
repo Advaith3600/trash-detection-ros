@@ -15,7 +15,7 @@ def get_dist(p1,p2):
     return math.sqrt((p1[1]-p2[1])**2 + (p1[0]-p2[0])**2)
 def get_ang(xmin,ymin,xmax,ymax,img):
     mp_of_img= [(xmax-xmin)//2,(ymax-ymin)//2]
-    mp_of_frame= [(img.shape[1])//2,0)]
+    mp_of_frame= [(img.shape[1])//2,0]
     hyp=get_dist(mp_of_img,mp_of_frame)
     base=(ymax-ymin)//2
     cos_theta=base/hyp
