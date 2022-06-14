@@ -1,4 +1,5 @@
 <launch>
 	<node name="motor" pkg="motor" type="MoveBot.py" output="screen" />
+	<node name="control" pkg="control" type="server.py" output="screen" />
 	<node name="master" pkg="master" type="Master.py" output="screen" />
 </launch>

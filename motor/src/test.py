@@ -1,21 +1,19 @@
 #!/usr/bin/env python3
 import time
-import rospy
 import RPi.GPIO as GPIO
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 
-GPIO.setup(29, GPIO.OUT)
-GPIO.setup(31, GPIO.OUT)
-GPIO.setup(32, GPIO.OUT)
-GPIO.setup(33, GPIO.OUT)
+ports = (31, 32, 35, 36)
+
+for port in ports:
+    GPIO.setup(port, GPIO.OUT)
 
 print('configured')
 
 
 def moveRobo(*ports):
-    print(ports)
     for port in ports:
         GPIO.output(port, GPIO.HIGH)
 
@@ -27,16 +25,16 @@ def moveRobo(*ports):
     time.sleep(2)
 
 
-# for i in (29, 31, 32, 33):
-#     print(i)
-#     moveRobo(i)
+for port in ports:
+    print(port)
+    moveRobo(port)
 
 
-print('moving forward')
-moveRobo([29, 31])
+# print('moving forward')
+# moveRobo([29, 31])
 
-print('moving backward')
-moveRobo([32, 33])
+# print('moving backward')
+# moveRobo([32, 33])
 
 exit()
 

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Robot</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            font-family: 'Helvetica Neue', 'Segoe UI', arial, sans-serif;
+            overflow: hidden;
+            background: linear-gradient(to bottom right, orange, yellow);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            border-radius: 1000px;
+            /* overflow: hidden; */
+            transform: rotate(45deg);
+            box-shadow: 0 3px 12px 6px rgba(0, 0, 0, .1);
+        }
+
+        .container button {
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgb(10, 139, 10);
+            transition: 250ms;
+            color: white;
+            border: none;
+            padding: 2rem;
+        }
+
+        .container button:nth-child(1) { border-top-left-radius: 1000px; }
+        .container button:nth-child(2) { border-top-right-radius: 1000px; }
+        .container button:nth-child(3) { border-bottom-left-radius: 1000px; }
+        .container button:nth-child(4) { border-bottom-right-radius: 1000px; }
+
+        .container button:hover {
+            position: relative;
+            z-index: 10;
+            background: green;
+            transform: scale(1.2);
+        }
+
+        .container button svg {
+            width: 38px;
+            height: 38px;
+            transform: rotate(-45deg);
+        }
+
+        .reset {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            padding: 6px 20px;
+            cursor: pointer;
+        }
+
+        .input {
+            margin-top: 4rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .input h3 {
+            text-transform: uppercase;
+        }
+
+        input {
+            transform: scale(2);
+        }
+
+        .delay_value {
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <button data-action="forward">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+        </button>
+        <button data-action="right">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+        <button data-action="left">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        <button data-action="backward">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </button>
+    </div>
+
+    <!-- <button class="reset">
+        Reset
+    </button> -->
+
+    <div class="input">
+        <h3>Robot Movement Distance</h3>
+        <input type="range" name="delay" id="delay" min="0.2" max="5" step="0.1" value="0.5" />
+        <div class="delay_value">Current value: <span id="delay_value">0.5</span></div>
+    </div>
+
+    <script>
+        const move = direction => {
+            fetch(`http://192.168.43.4:3600`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    direction,
+                    delay: Number(document.getElementById('delay').value)
+                })
+            }).then(resp => resp.json());
+        }
+
+        window.addEventListener('load', () => {
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', event => {
+                    move(button.dataset.action);
+                });
+            });
+        });
+
+        const keyMapper = {
+            38: 'forward',
+            39: 'right',
+            40: 'backward',
+            37: 'left'
+        }
+
+        document.addEventListener('keydown', event => {
+            const { keyCode } = event;
+            if (keyMapper[keyCode]) {
+                event.preventDefault();
+                move(keyMapper[keyCode]);
+            }
+        });
+
+        document.getElementById('delay').addEventListener('input', event => {
+            document.getElementById('delay_value').innerText = event.target.value;
+        })
+    </script>
+</body>
+
+</html>
