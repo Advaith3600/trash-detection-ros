@@ -30,7 +30,7 @@ class MoveBot:
         for port in ports:
             GPIO.output(port, GPIO.HIGH)
 
-        time.sleep(delay)
+        rospy.sleep(delay)
 
         for port in ports:
             GPIO.output(port, GPIO.LOW)

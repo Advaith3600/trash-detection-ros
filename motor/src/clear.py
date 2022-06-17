@@ -11,3 +11,5 @@ for port in ports:
     GPIO.setup(port, GPIO.OUT)
     GPIO.output(port, GPIO.LOW)
     time.sleep(0.2)
+
+GPIO.cleanup()
